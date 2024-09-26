@@ -23,7 +23,7 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_PROVIDER;
 
 import android.app.Activity;
-import androidx.fragment.app.Fragment;
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
@@ -149,7 +149,7 @@ public class QsbContainerView extends FrameLayout {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding(0, 0, 0, 0);
+        super.setPadding(left, top, right, bottom);
     }
 
     protected void setPaddingUnchecked(int left, int top, int right, int bottom) {

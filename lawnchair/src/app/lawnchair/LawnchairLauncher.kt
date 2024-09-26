@@ -334,6 +334,7 @@ class LawnchairLauncher : QuickstepLauncher() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // Only actually closes if required, safe to call if not enabled
         SmartspacerClient.close()
     }
 

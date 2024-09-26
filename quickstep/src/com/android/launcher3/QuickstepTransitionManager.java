@@ -166,7 +166,7 @@ import java.util.List;
 import app.lawnchair.LawnchairApp;
 import app.lawnchair.compat.LawnchairQuickstepCompat;
 import app.lawnchair.icons.shape.IconShapeManager;
-import app.lawnchair.theme.color.ColorTokens;
+import app.lawnchair.theme.color.tokens.ColorTokens;
 
 /**
  * Manages the opening and closing app transitions from Launcher
@@ -1154,7 +1154,7 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
 
         if (ENABLE_SHELL_TRANSITIONS && LawnchairQuickstepCompat.ATLEAST_U)
             SystemUiProxy.INSTANCE.get(mLauncher).shareTransactionQueue();
-        if (hasControlRemoteAppTransitionPermission()) {
+        if (hasControlRemoteAppTransitionPermission() && LawnchairQuickstepCompat.ATLEAST_Q) {
             mWallpaperOpenTransitionRunner = createWallpaperOpenRunner(false /* fromUnlock */);
             mLauncherOpenTransition = LawnchairQuickstepCompat.getRemoteTransitionCompat().getRemoteTransition(
                     new LauncherAnimationRunner(mHandler, mWallpaperOpenTransitionRunner,

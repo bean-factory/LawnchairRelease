@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import app.lawnchair.preferences.getAdapter
 import app.lawnchair.preferences.preferenceManager
 import app.lawnchair.preferences2.preferenceManager2
+import app.lawnchair.ui.preferences.LocalIsExpandedScreen
 import app.lawnchair.ui.preferences.components.colorpreference.ColorPreference
 import app.lawnchair.ui.preferences.components.controls.SliderPreference
 import app.lawnchair.ui.preferences.components.controls.SwitchPreference
@@ -36,6 +37,7 @@ fun FolderPreferences(
 ) {
     PreferenceLayout(
         label = stringResource(id = R.string.folders_label),
+        backArrowVisible = !LocalIsExpandedScreen.current,
         modifier = modifier,
     ) {
         val prefs = preferenceManager()
@@ -45,6 +47,13 @@ fun FolderPreferences(
             SliderPreference(
                 label = stringResource(id = R.string.folder_preview_bg_opacity_label),
                 adapter = prefs2.folderPreviewBackgroundOpacity.getAdapter(),
+                step = 0.1F,
+                valueRange = 0F..1F,
+                showAsPercentage = true,
+            )
+            SliderPreference(
+                label = stringResource(id = R.string.folder_bg_opacity_label),
+                adapter = prefs2.folderBackgroundOpacity.getAdapter(),
                 step = 0.1F,
                 valueRange = 0F..1F,
                 showAsPercentage = true,
@@ -69,7 +78,7 @@ fun FolderPreferences(
             val homeScreenLabelsAdapter = prefs2.showIconLabelsOnHomeScreenFolder.getAdapter()
             SwitchPreference(
                 adapter = homeScreenLabelsAdapter,
-                label = stringResource(id = R.string.show_home_labels),
+                label = stringResource(id = R.string.show_labels),
             )
             ExpandAndShrink(visible = homeScreenLabelsAdapter.state.value) {
                 SliderPreference(

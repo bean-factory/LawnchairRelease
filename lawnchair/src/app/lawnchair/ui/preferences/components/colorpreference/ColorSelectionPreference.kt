@@ -32,7 +32,6 @@ import app.lawnchair.ui.preferences.components.layout.Chip
 import app.lawnchair.ui.preferences.components.layout.PreferenceLayout
 import com.android.launcher3.R
 import com.patrykmichalik.opto.domain.Preference
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -40,8 +39,8 @@ fun ColorSelection(
     label: String,
     preference: Preference<ColorOption, String, *>,
     modifier: Modifier = Modifier,
-    dynamicEntries: ImmutableList<ColorPreferenceEntry<ColorOption>> = dynamicColors,
-    staticEntries: ImmutableList<ColorPreferenceEntry<ColorOption>> = staticColors,
+    dynamicEntries: List<ColorPreferenceEntry<ColorOption>> = dynamicColors,
+    staticEntries: List<ColorPreferenceEntry<ColorOption>> = staticColors,
 ) {
     val adapter = preference.getAdapter()
     val appliedColor = adapter.state.value
@@ -54,8 +53,8 @@ fun ColorSelection(
     }
     val defaultTabIndex = when {
         dynamicEntries.any { it.value == appliedColor } -> 0
-        staticEntries.any { it.value == appliedColor } -> 1
-        else -> 2
+        staticEntries.any { it.value == appliedColor } -> 0
+        else -> 1
     }
 
     val onPresetClick = { option: ColorOption ->
@@ -86,7 +85,7 @@ fun ColorSelection(
                         .fillMaxWidth()
                         .padding(all = 16.dp),
                 ) {
-                    Text(text = stringResource(id = R.string.apply_grid))
+                    Text(text = stringResource(id = R.string.action_apply))
                 }
                 BottomSpacer()
             }

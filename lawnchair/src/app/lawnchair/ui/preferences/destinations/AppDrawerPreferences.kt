@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import app.lawnchair.preferences.getAdapter
 import app.lawnchair.preferences.preferenceManager
 import app.lawnchair.preferences2.preferenceManager2
+import app.lawnchair.ui.preferences.LocalIsExpandedScreen
 import app.lawnchair.ui.preferences.components.NavigationActionPreference
 import app.lawnchair.ui.preferences.components.SuggestionsPreference
 import app.lawnchair.ui.preferences.components.controls.SliderPreference
@@ -48,6 +49,7 @@ fun AppDrawerPreferences(
 
     PreferenceLayout(
         label = stringResource(id = R.string.app_drawer_label),
+        backArrowVisible = !LocalIsExpandedScreen.current,
         modifier = modifier,
     ) {
         PreferenceGroup(heading = stringResource(id = R.string.general_label)) {
@@ -92,21 +94,21 @@ fun AppDrawerPreferences(
             SliderPreference(
                 adapter = prefs2.drawerCellHeightFactor.getAdapter(),
                 label = stringResource(id = R.string.row_height_label),
-                valueRange = 0.7F..1.5F,
+                valueRange = 0.3F..1.5F,
                 step = 0.1F,
                 showAsPercentage = true,
             )
             SliderPreference(
                 adapter = prefs2.drawerLeftRightMarginFactor.getAdapter(),
                 label = stringResource(id = R.string.app_drawer_indent_label),
-                valueRange = 0.0F..2.0F,
-                step = 0.01F,
+                valueRange = 0.0F..1.5F,
+                step = 0.05F,
                 showAsPercentage = true,
             )
         }
         PreferenceGroup(heading = stringResource(id = R.string.icons)) {
             SliderPreference(
-                label = stringResource(id = R.string.icon_size),
+                label = stringResource(id = R.string.icon_sizes),
                 adapter = prefs2.drawerIconSizeFactor.getAdapter(),
                 step = 0.1f,
                 valueRange = 0.5F..1.5F,
@@ -115,7 +117,7 @@ fun AppDrawerPreferences(
             val showDrawerLabels = prefs2.showIconLabelsInDrawer.getAdapter()
             SwitchPreference(
                 adapter = showDrawerLabels,
-                label = stringResource(id = R.string.show_home_labels),
+                label = stringResource(id = R.string.show_labels),
             )
             ExpandAndShrink(visible = showDrawerLabels.state.value) {
                 DividerColumn {
@@ -128,7 +130,7 @@ fun AppDrawerPreferences(
                     )
                     SwitchPreference(
                         adapter = prefs2.twoLineAllApps.getAdapter(),
-                        label = stringResource(R.string.allapps_twoline_label),
+                        label = stringResource(R.string.twoline_label),
                     )
                 }
             }

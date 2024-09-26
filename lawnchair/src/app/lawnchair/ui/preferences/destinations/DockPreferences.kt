@@ -28,7 +28,9 @@ import app.lawnchair.preferences.getAdapter
 import app.lawnchair.preferences.preferenceManager
 import app.lawnchair.preferences2.preferenceManager2
 import app.lawnchair.qsb.providers.QsbSearchProvider
+import app.lawnchair.ui.preferences.LocalIsExpandedScreen
 import app.lawnchair.ui.preferences.components.NavigationActionPreference
+import app.lawnchair.ui.preferences.components.colorpreference.ColorPreference
 import app.lawnchair.ui.preferences.components.controls.ListPreference
 import app.lawnchair.ui.preferences.components.controls.ListPreferenceEntry
 import app.lawnchair.ui.preferences.components.controls.MainSwitchPreference
@@ -39,7 +41,6 @@ import app.lawnchair.ui.preferences.components.layout.ExpandAndShrink
 import app.lawnchair.ui.preferences.components.layout.PreferenceGroup
 import app.lawnchair.ui.preferences.components.layout.PreferenceLayout
 import com.android.launcher3.R
-import kotlinx.collections.immutable.toPersistentList
 
 object DockRoutes {
     const val SEARCH_PROVIDER = "searchProvider"
@@ -53,6 +54,7 @@ fun DockPreferences(
     val prefs2 = preferenceManager2()
     PreferenceLayout(
         label = stringResource(id = R.string.dock_label),
+        backArrowVisible = !LocalIsExpandedScreen.current,
         modifier = modifier,
     ) {
         val isHotseatEnabled = prefs2.isHotseatEnabled.getAdapter()
@@ -64,6 +66,16 @@ fun DockPreferences(
                 )
                 ExpandAndShrink(visible = hotseatModeAdapter.state.value == LawnchairHotseat) {
                     DividerColumn {
+                        val hotseatQsbProviderAdapter by preferenceManager2().hotseatQsbProvider.getAdapter()
+                        NavigationActionPreference(
+                            label = stringResource(R.string.search_provider),
+                            destination = DockRoutes.SEARCH_PROVIDER,
+                            subtitle = stringResource(
+                                id = QsbSearchProvider.values()
+                                    .first { it == hotseatQsbProviderAdapter }
+                                    .name,
+                            ),
+                        )
                         SwitchPreference(
                             adapter = prefs2.themedHotseatQsb.getAdapter(),
                             label = stringResource(id = R.string.apply_accent_color_label),
@@ -75,16 +87,25 @@ fun DockPreferences(
                             valueRange = 0F..1F,
                             showAsPercentage = true,
                         )
-                        val hotseatQsbProviderAdapter by preferenceManager2().hotseatQsbProvider.getAdapter()
-                        NavigationActionPreference(
-                            label = stringResource(R.string.search_provider),
-                            destination = DockRoutes.SEARCH_PROVIDER,
-                            subtitle = stringResource(
-                                id = QsbSearchProvider.values()
-                                    .first { it == hotseatQsbProviderAdapter }
-                                    .name,
-                            ),
+                        SliderPreference(
+                            label = stringResource(id = R.string.qsb_hotseat_background_transparency),
+                            adapter = prefs.hotseatQsbAlpha.getAdapter(),
+                            step = 5,
+                            valueRange = 0..100,
+                            showUnit = "%",
                         )
+                        val qsbHotseatStrokeWidth = prefs.hotseatQsbStrokeWidth.getAdapter()
+
+                        SliderPreference(
+                            label = stringResource(id = R.string.qsb_hotseat_stroke_width),
+                            adapter = qsbHotseatStrokeWidth,
+                            step = 1f,
+                            valueRange = 0f..10f,
+                            showUnit = "vw",
+                        )
+                        ExpandAndShrink(visible = qsbHotseatStrokeWidth.state.value > 0f) {
+                            ColorPreference(preference = prefs2.strokeColorStyle)
+                        }
                     }
                 }
             }
@@ -121,7 +142,7 @@ private fun HotseatModePreference(
                 label = { stringResource(id = mode.nameResourceId) },
                 enabled = mode.isAvailable(context = context),
             )
-        }.toPersistentList()
+        }
     }
 
     ListPreference(

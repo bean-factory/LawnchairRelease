@@ -29,6 +29,7 @@ import app.lawnchair.preferences.getAdapter
 import app.lawnchair.preferences.preferenceManager
 import app.lawnchair.preferences2.preferenceManager2
 import app.lawnchair.theme.color.ColorMode
+import app.lawnchair.ui.preferences.LocalIsExpandedScreen
 import app.lawnchair.ui.preferences.components.FeedPreference
 import app.lawnchair.ui.preferences.components.GestureHandlerPreference
 import app.lawnchair.ui.preferences.components.NavigationActionPreference
@@ -58,6 +59,7 @@ fun HomeScreenPreferences(
     val scope = rememberCoroutineScope()
     PreferenceLayout(
         label = stringResource(id = R.string.home_screen_label),
+        backArrowVisible = !LocalIsExpandedScreen.current,
         modifier = modifier,
     ) {
         val lockHomeScreenAdapter = prefs2.lockHomeScreen.getAdapter()
@@ -162,7 +164,7 @@ fun HomeScreenPreferences(
         }
         PreferenceGroup(heading = stringResource(id = R.string.icons)) {
             SliderPreference(
-                label = stringResource(id = R.string.icon_size),
+                label = stringResource(id = R.string.icon_sizes),
                 adapter = prefs2.homeIconSizeFactor.getAdapter(),
                 step = 0.1f,
                 valueRange = 0.5F..1.5F,
@@ -171,7 +173,7 @@ fun HomeScreenPreferences(
             val homeScreenLabelsAdapter = prefs2.showIconLabelsOnHomeScreen.getAdapter()
             SwitchPreference(
                 adapter = homeScreenLabelsAdapter,
-                label = stringResource(id = R.string.show_home_labels),
+                label = stringResource(id = R.string.show_labels),
             )
             ExpandAndShrink(visible = homeScreenLabelsAdapter.state.value) {
                 SliderPreference(

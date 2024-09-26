@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import app.lawnchair.BlankActivity
 import app.lawnchair.ui.preferences.PreferenceActivity
-import app.lawnchair.ui.preferences.Routes
+import app.lawnchair.ui.preferences.navigation.Routes
 import app.lawnchair.util.kotlinxJson
 import com.android.launcher3.R
 
@@ -25,6 +25,7 @@ sealed class GestureHandlerOption(
 
     data object NoOp : Simple(GestureHandlerConfig.NoOp)
     data object Sleep : Simple(GestureHandlerConfig.Sleep)
+    data object Recents : Simple(GestureHandlerConfig.Recents)
     data object OpenNotifications : Simple(GestureHandlerConfig.OpenNotifications)
     data object OpenAppDrawer : Simple(GestureHandlerConfig.OpenAppDrawer)
     data object OpenAppSearch : Simple(GestureHandlerConfig.OpenAppSearch)

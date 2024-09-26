@@ -132,7 +132,11 @@ sealed class QsbSearchProvider(
             Presearch,
             Bing,
             Brave,
+            Yandex,
+            Firefox,
+            Iceraven,
             Startpage,
+            Mull,
         )
 
         /**
